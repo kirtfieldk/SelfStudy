@@ -1,0 +1,2 @@
+Depth First Traversal - Go depth First then (Stack)
+Bresth First Traversal - Go to Nebors first before going down anymore,Explores all directions evenly (Queue)
