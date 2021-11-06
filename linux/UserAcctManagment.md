@@ -65,3 +65,10 @@ PASS_MIN_DAYS 0
 PASS_MIN_LENGTH 5
 PASS_WARN_AGE 7
 ```
+
+### The `chage` command (change age) use to set params around password
+
+```bash
+    chage [-d lastday] [-m mindays] [-M maxdays] [-W warnDays] [-I inactive]
+        [-E expireDate] <user>
+```
