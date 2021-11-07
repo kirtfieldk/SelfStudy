@@ -98,3 +98,44 @@ Types of Upgrades
     [root@redhat keith]# rpm -qf /usr/bin/pwd
     coreutils-8.30-8.el8.x86_64
 ```
+
+# ACL Access Control List
+
+Allows to give permission to any user/group for any disk resource
+
+- Want to give some specific user permission to access some files and not put them in any group.
+  Commands to assign and remove ACL `setfacl | getfacl`
+
+```bash
+    setfacl -m u:<user>:rwx <path>
+    # Add permission to specific group
+    setfacl -m g:<group>:rwx <path>
+    #Allow file/dir to inherit ACL entries from Dir it is in
+    setfacl -dm "entry" <path>
+    # To remove a specific User/Group from having any permission
+    setfacl -x u:user <path>
+    # Remove all ACL
+    setfacl -b <path>
+    # remove all entries
+    setfacl -b <path> (for all users)
+    # More Info
+    getfacl <file>
+
+    # ex as root WOrks the same as group
+    touch /tmp/temp
+    setfacl -m[odify] u:keith:rw /tmp/temp
+    getfacl /tmp/temp
+    # file: temp
+    # owner: root
+    # group: root
+    # user::rw-
+    # user:keith:rw-
+    # group::r--
+    # mask::rw-
+    # other::r--
+    ll
+    # -rw-rw-r--+ 1 root  root     0 Nov  6 19:15 temp
+```
+
+- As assign ACL to file/dir it add '+' to end of permission
+- Setting 'w' with ACL does not grant deleting file

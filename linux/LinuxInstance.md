@@ -64,7 +64,6 @@ Most services are daemons, Services are controlled by `systemctl`. `systemctl` c
     # List all packages installed
     rpm -qa
     rmp -qa | grep <package>
-
     # Total number of installed packages
     rpm -qa | wc -l
 ```
