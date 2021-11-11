@@ -97,3 +97,70 @@ reboot
 - ncorrect mount option in /etc/fstab
 
 - Need to use emergency shell for all cases to fix issue because no file systems are mounted before the emergency shell is displayed. When using emergency shell, NEED TO RUN `systemctl daemon-reload` after editing `/etc/fstab`. WIthout reload systems may continu using old files
+
+# Running and controlling jobs in foreground and background
+
+# Firmware Phase
+
+- The `Firmware` phase is the `BIOS (Basic Input/Output System)`or the `UEFI (Unified Extensible Firmware Interface)` code is stored in flash memory on the x86-based system board. Runs the `Power-on-self-test(POST)` to detect, test, and init the system hardware components. Scans for avail storage devices to locate a boot device, it loads the bootloader into memand passes control over to it.
+
+# Bootloader Phase
+
+- Once the `firmware` stage is over and a boot device is detected, the system loads a peice of software called `bootloader` that is located in boot sector of the boot device. Uses `GRUB2` as bootloader program, supports both BIOS and UEFI.
+- Primary job is to spot the linux kernal code in the `/boot` file system service, decompress it, load it into memory based on the config defined in the `/boot/grub2/grub.cfg` file and transfers control over to it to further the boot process.
+
+# Kernal Phase
+
+- The kernal is the central program of the OS. The kernal extracts the init `RAM disk` file system image found in the `/boot` file system into memory,. decompress it, and mounts it as read-only on `/sysroot`.
+- Kernal executes the systemd process with PID 1 and passes control to it.
+
+# Initialization phase
+
+- Last pase of boot process, systemd takes control of the kernal and continues the boot process.
+
+## Booting into specific targets
+
+- Boots into graphical target stage by default.
+- Emergency and Rescue Boot targets (Press `e` on `GRUB2` interface kernal)
+
+### Example Resetting `Root` User Passwd
+
+- Assume Root user password gone
+- Reboot server and press `e` on the default kernal on the `GRUB2` interface.
+- Scroll to line that begins with `linux` and press `END` to go to end of line
+- At the end of the CMD add `rd.break`
+- cntrl + x when done and boot to the special shell. The system mounts the root file system read-only on the `/sysroot` directory. Make `/sysroot` appear as mounted on `/` using the `chroot` command.
+
+```bash
+  chroot /sysroot
+  pwd
+    /
+```
+
+- Remount the root file system in read/write mode for the passwd command to be able to modify the `shadow` file with new password.
+
+```bash
+  mount -o remount,rw /
+  passwd
+    New Password
+    Retype New Password:
+```
+
+- Create hidden file `.autorelabel` to instruct the OS to run `SELinux` relabeling on all files.
+
+```bash
+  touch .autorelabel
+  exit
+  reboot
+```
+
+# The Linux Kernal
+
+It is a collection of software components called modules that work in tandem to provide a stable and controlled platform. `Modules` are `device drivers` that controll hardware devices.
+
+```bash
+  # List packages that support the kernal to make it run
+  sudo dnf list installed kernal*
+  # Kernal Version
+  uname -r
+```
