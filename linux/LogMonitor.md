@@ -79,11 +79,11 @@ Systemd-based logging service for the collection and storage of logging data. Im
 - default stored in `/run/log/journal` untill end of system runtime, Does not survive reboots(transient)
 - Default stores to `/var/log/journal` dir, but you need to manually create this directory.
   | Volatile | Stores in Mem only |
-  |||
+  |------------|-----------------------------------------------------------------------------------------------------|
   | Persistent | Stores data permunder /var/log/journal and uses in mem if dir doesnt exists, creates if not exists |
-  |||
+  |------------|------------------------------------------------------------------------------------------------------|
   | Auto | Same as Persistent, but does not create /var/log/journal |
-  |||
+  |-------|-----------------------------------------------------------------------------------------------------------|
   | None | |
 
 ```bash
